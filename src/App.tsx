@@ -1,7 +1,9 @@
 import React from "react";
 import {IonApp, IonRouterOutlet} from '@ionic/react'
+import {IonReactRouter} from "@ionic/react-router";
+import {Redirect, Route} from "react-router";
 
-import { HomeFeedPage } from "./app/pages";
+import {HomeFeedController, LoginController, SignupController} from "./app/controllers";
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -21,19 +23,18 @@ import '@ionic/react/css/display.css';
 
 /* Theme variables */
 import './app/theme/variables.css';
-import {IonReactRouter} from "@ionic/react-router";
-import {Redirect, Route} from "react-router-dom";
 
 const App: React.FC = () => (
-  <IonApp>
-      <IonReactRouter>
-          <IonRouterOutlet>
-              <Route path="/home-feed" component={HomeFeedPage} exact={true} />
-              <Route path="/" render={() => <Redirect to="/home-feed" />} exact={true} />
-          </IonRouterOutlet>
-      </IonReactRouter>
-    <HomeFeedPage/>
-  </IonApp>
+    <IonApp>
+        <IonReactRouter>
+            <IonRouterOutlet>
+                <Route path="/login" component={LoginController} exact={true}/>
+                <Route path="/signup" component={SignupController} exact={true}/>
+                <Route path="/home-feed" component={HomeFeedController} exact={true}/>
+                <Route path="/" render={() => <Redirect to="/login"/>} exact={true}/>
+            </IonRouterOutlet>
+        </IonReactRouter>
+    </IonApp>
 );
 
 export default App;

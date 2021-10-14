@@ -24,14 +24,14 @@ clientsClaim();
 // even if you decide not to use precaching. See https://cra.link/PWA
 precacheAndRoute(self.__WB_MANIFEST);
 
-// Set up App Shell-style routing, so that all navigation requests
+// Set up App Shell-style routing, so that all routes requests
 // are fulfilled with your index.html shell. Learn more at
 // https://developers.google.com/web/fundamentals/architecture/app-shell
 const fileExtensionRegexp = new RegExp('/[^/?]+\\.[^/]+$');
 registerRoute(
   // Return false to exempt requests from being fulfilled by index.html.
   ({ request, url }: { request: Request; url: URL }) => {
-    // If this isn't a navigation, skip.
+    // If this isn't a routes, skip.
     if (request.mode !== 'navigate') {
       return false;
     }
