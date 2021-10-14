@@ -1,5 +1,7 @@
 import React from "react";
-import { IonApp } from '@ionic/react';
+import {IonApp, IonRouterOutlet} from '@ionic/react'
+
+import { HomeFeedPage } from "./app/pages";
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -19,11 +21,18 @@ import '@ionic/react/css/display.css';
 
 /* Theme variables */
 import './app/theme/variables.css';
-import AppBottomTabNavigation from "./app/navigation/AppBottomTabNavigation";
+import {IonReactRouter} from "@ionic/react-router";
+import {Redirect, Route} from "react-router-dom";
 
 const App: React.FC = () => (
   <IonApp>
-    <AppBottomTabNavigation/>
+      <IonReactRouter>
+          <IonRouterOutlet>
+              <Route path="/home-feed" component={HomeFeedPage} exact={true} />
+              <Route path="/" render={() => <Redirect to="/home-feed" />} exact={true} />
+          </IonRouterOutlet>
+      </IonReactRouter>
+    <HomeFeedPage/>
   </IonApp>
 );
 
