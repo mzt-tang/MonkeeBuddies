@@ -1,3 +1,4 @@
+import React from "react";
 import { IonApp } from '@ionic/react';
 
 /* Core CSS required for Ionic components to work properly */
@@ -18,10 +19,11 @@ import '@ionic/react/css/display.css';
 
 /* Theme variables */
 import './app/theme/variables.css';
+import AppBottomTabNavigation from "./app/navigation/AppBottomTabNavigation";
 
 const App: React.FC = () => (
   <IonApp>
-    <h2>Testing!</h2>
+    <AppBottomTabNavigation/>
   </IonApp>
 );
 
