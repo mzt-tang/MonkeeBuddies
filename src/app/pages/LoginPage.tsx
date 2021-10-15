@@ -1,5 +1,5 @@
 import React from "react";
-import {IonButton, IonContent, IonHeader, IonInput, IonPage, IonTitle, IonToolbar} from "@ionic/react";
+import {IonButton, IonContent, IonHeader, IonInput, IonLoading, IonPage, IonTitle, IonToolbar} from "@ionic/react";
 
 /**
  * The login view
@@ -9,6 +9,7 @@ const LoginPage: React.FC<{
     setUsername: React.Dispatch<React.SetStateAction<string>>;
     setPassword: React.Dispatch<React.SetStateAction<string>>;
     handleLogin: () => void;
+    isLoading: boolean,
 }> = props => (
     <IonPage>
         <IonHeader>
@@ -16,6 +17,7 @@ const LoginPage: React.FC<{
                 <IonTitle>Login Page</IonTitle>
             </IonToolbar>
         </IonHeader>
+        <IonLoading message="Please wait..." duration={0} isOpen={props.isLoading} />
         <IonContent className="ion-padding">
             <IonInput placeholder="Username (Email)" onIonChange={(e) => props.setUsername(e.detail.value!)}/>
             <IonInput type="password" placeholder="Password" onIonChange={(e) => props.setPassword(e.detail.value!)}/>

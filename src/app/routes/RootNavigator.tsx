@@ -28,16 +28,25 @@ const RootNavigator: React.FC = () => {
         return unsubscribeAuth;
     }, [setUser]);
 
+    if (!user) {
+        return (
+            <IonReactRouter>
+                <IonLoading message="Please wait..." duration={0} isOpen={isLoading} />
+                <IonRouterOutlet>
+                    <Route path="/login" component={LoginController} exact={true}/>
+                    <Route path="/signup" component={SignupController} exact={true}/>
+                    <Redirect from="/" to="/login" exact={true}/>
+                </IonRouterOutlet>
+            </IonReactRouter>
+        )
+    }
+
     return (
         <IonReactRouter>
             <IonLoading message="Please wait..." duration={0} isOpen={isLoading} />
             <IonRouterOutlet>
-                <Route path="/" render={() => {
-                    return user ? <Redirect to="/dashboard"/> : <Redirect to="/login"/>
-                }} exact={false}/>
-                <Route path="/login" component={LoginController} exact={true}/>
-                <Route path="/signup" component={SignupController} exact={true}/>
                 <Route path="/dashboard" component={DashboardController} exact={true}/>
+                <Redirect from="/" to="/dashboard" exact={true}/>
             </IonRouterOutlet>
         </IonReactRouter>
     );

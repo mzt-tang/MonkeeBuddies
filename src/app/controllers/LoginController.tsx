@@ -9,23 +9,24 @@ import {toast} from "../components";
  * @constructor
  */
 export default function LoginController() {
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
+    const [username, setUsername] = useState<string>('');
+    const [password, setPassword] = useState<string>('')
+    const [isLoading, setIsLoading] = useState<boolean>(false);
 
     async function handleLogin() {
+        setIsLoading(true);
         if (username.length === 0 || password.length === 0) {
             toast('Email and password is required');
-            return false;
+            return;
         }
 
         const user = new User();
         const login = await user.loginUser(username, password)
         if (login) {
             toast('Successful login!')
-            return true;
         }
 
-        return false;
+        setIsLoading(false);
     }
 
     return (
@@ -34,6 +35,7 @@ export default function LoginController() {
             setUsername={setUsername}
             setPassword={setPassword}
             handleLogin={handleLogin}
+            isLoading={isLoading}
         />
     )
 }

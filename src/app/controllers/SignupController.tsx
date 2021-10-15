@@ -10,11 +10,13 @@ import {User} from "../models";
 export default function SignupController() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [isLoading, setIsLoading] = useState<boolean>(false);
 
     async function handleSignup() {
+        setIsLoading(true);
         if (username.length === 0 || password.length === 0) {
             toast('Email and password is required');
-            return
+            return;
         }
 
         const user = new User();
@@ -22,6 +24,8 @@ export default function SignupController() {
         if (signup) {
             toast('Account successfully created!');
         }
+
+        setIsLoading(false);
     }
 
     return (
@@ -30,6 +34,7 @@ export default function SignupController() {
             setUsername={setUsername}
             setPassword={setPassword}
             handleSignup={handleSignup}
+            isLoading={isLoading}
         />
     )
 }
