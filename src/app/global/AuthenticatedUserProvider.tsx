@@ -1,5 +1,8 @@
 import {createContext, useState} from "react";
 
+/**
+ * Context hook for detecting whether or a user is logged in.
+ */
 export const AuthenticatedUserContext = createContext({});
 
 /**

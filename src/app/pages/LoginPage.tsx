@@ -18,7 +18,7 @@ const LoginPage: React.FC<{
         </IonHeader>
         <IonContent className="ion-padding">
             <IonInput placeholder="Username (Email)" onIonChange={(e) => props.setUsername(e.detail.value!)}/>
-            <IonInput placeholder="Password" onIonChange={(e) => props.setPassword(e.detail.value!)}/>
+            <IonInput type="password" placeholder="Password" onIonChange={(e) => props.setPassword(e.detail.value!)}/>
             <IonButton color="primary" onClick={props.handleLogin}>Login</IonButton>
             <IonButton color="secondary" routerLink="/signup">Go to signup</IonButton>
         </IonContent>
