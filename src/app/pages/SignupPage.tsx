@@ -8,6 +8,7 @@ import React from "react";
 const SignupPage: React.FC<{
     setUsername: React.Dispatch<React.SetStateAction<string>>;
     setPassword: React.Dispatch<React.SetStateAction<string>>;
+    handleSignup: () => void;
 }> = props => (
     <IonPage>
         <IonHeader>
@@ -16,9 +17,9 @@ const SignupPage: React.FC<{
             </IonToolbar>
         </IonHeader>
         <IonContent className="ion-padding">
-            <IonInput placeholder="Username" onIonChange={(e) => props.setUsername(e.detail.value!)}/>
+            <IonInput placeholder="Email" onIonChange={(e) => props.setUsername(e.detail.value!)}/>
             <IonInput placeholder="Password" onIonChange={(e) => props.setPassword(e.detail.value!)}/>
-            <IonButton color="primary">Register</IonButton>
+            <IonButton color="primary" onClick={props.handleSignup}>Register</IonButton>
             <IonButton color="secondary" routerLink="/login">Go to login</IonButton>
         </IonContent>
     </IonPage>

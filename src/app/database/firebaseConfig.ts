@@ -1,6 +1,7 @@
 import firebase from "firebase/compat";
-import "firebase/firestore";
 import "firebase/auth";
+import "firebase/firestore";
+import "firebase/storage";
 
 // MonkeeBuddies's Firebase configuration
 const firebaseConfig = {

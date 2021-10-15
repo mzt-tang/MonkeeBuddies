@@ -1,15 +1,18 @@
 import firebase from "firebase/compat";
+
 import {database} from "../database/firebaseConfig";
+import {toast} from "../components";
+import {strategy} from "workbox-streams";
 
 export default class User {
 
-    firebase;
+    db;
 
     /**
      * Initialises firebase
      */
     constructor() {
-        this.firebase = database;
+        this.db = database;
     }
 
     /**
@@ -22,8 +25,21 @@ export default class User {
             const login = await firebase.auth().signInWithEmailAndPassword(username, password);
             console.log(login);
             return true;
-        } catch (e) {
-            console.log(e);
+        } catch (error) {
+            // @ts-ignore
+            toast(error.message, 4000);
+            return false;
+        }
+    }
+
+    async signupUser(username: string, password: string) {
+        try {
+            const signup = await firebase.auth().createUserWithEmailAndPassword(username, password);
+            console.log(signup);
+            return true;
+        } catch (error) {
+            // @ts-ignore
+            toast(error.message, 4000);
             return false;
         }
     }

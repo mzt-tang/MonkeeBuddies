@@ -1,9 +1,9 @@
-import HomeFeedController from "./HomeFeedController";
+import DashboardController from "./DashboardController";
 import LoginController from "./LoginController";
 import SignupController from "./SignupController";
 
 export {
-    HomeFeedController,
+    DashboardController,
     LoginController,
     SignupController,
 }

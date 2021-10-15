@@ -3,7 +3,7 @@ import {IonApp, IonRouterOutlet} from '@ionic/react'
 import {IonReactRouter} from "@ionic/react-router";
 import {Redirect, Route} from "react-router";
 
-import {HomeFeedController, LoginController, SignupController} from "./app/controllers";
+import {DashboardController, LoginController, SignupController} from "./app/controllers";
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -30,7 +30,7 @@ const App: React.FC = () => (
             <IonRouterOutlet>
                 <Route path="/login" component={LoginController} exact={true}/>
                 <Route path="/signup" component={SignupController} exact={true}/>
-                <Route path="/home-feed" component={HomeFeedController} exact={true}/>
+                <Route path="/home-feed" component={DashboardController} exact={true}/>
                 <Route path="/" render={() => <Redirect to="/login"/>} exact={true}/>
             </IonRouterOutlet>
         </IonReactRouter>

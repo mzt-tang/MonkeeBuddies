@@ -1,9 +1,9 @@
-import HomeFeedPage from "./HomeFeedPage";
+import DashboardPage from "./DashboardPage";
 import LoginPage from "./LoginPage";
 import SignupPage from "./SignupPage";
 
 export {
-    HomeFeedPage,
+    DashboardPage,
     LoginPage,
     SignupPage,
 }
