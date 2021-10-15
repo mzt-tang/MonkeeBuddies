@@ -4,7 +4,7 @@ import {toast} from "../components";
 import {User} from "../models";
 
 /**
- * The signup controller/presenter
+ * The signup controller/presenter.
  * @constructor
  */
 export default function SignupController() {

@@ -2,7 +2,7 @@ import React from "react";
 import {IonButton, IonContent, IonHeader, IonInput, IonLoading, IonPage, IonTitle, IonToolbar} from "@ionic/react";
 
 /**
- * The login view
+ * The login view.
  * @constructor
  */
 const LoginPage: React.FC<{

@@ -9,6 +9,10 @@ import {database} from "../database/firebaseConfig";
 
 const auth = database.auth();
 
+/**
+ * The root navigation stack, handles the login/sign in/sign out and splits the authentication and app stacks.
+ * @constructor
+ */
 const RootNavigator: React.FC = () => {
     const {user, setUser} = useContext<any>(AuthenticatedUserContext);
     const [isLoading, setIsLoading] = useState(true);
@@ -28,6 +32,7 @@ const RootNavigator: React.FC = () => {
         return unsubscribeAuth;
     }, [setUser]);
 
+    // The authentication stack
     if (!user) {
         return (
             <IonReactRouter>
@@ -41,6 +46,7 @@ const RootNavigator: React.FC = () => {
         )
     }
 
+    // The app stack
     return (
         <IonReactRouter>
             <IonLoading message="Please wait..." duration={0} isOpen={isLoading} />

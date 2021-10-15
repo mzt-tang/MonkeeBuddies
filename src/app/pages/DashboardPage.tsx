@@ -2,7 +2,7 @@ import React from "react";
 import {IonButton, IonContent, IonHeader, IonPage, IonTitle, IonToolbar} from "@ionic/react";
 
 /**
- * The home feed view
+ * The dashboard view.
  * @constructor
  */
 const DashboardPage: React.FC<{

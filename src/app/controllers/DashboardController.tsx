@@ -2,7 +2,7 @@ import {DashboardPage} from "../pages";
 import {User} from "../models";
 
 /**
- * The home feed controller/presenter
+ * The dashboard controller/presenter.
  * @constructor
  */
 export default function DashboardController() {

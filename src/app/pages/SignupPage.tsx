@@ -2,7 +2,7 @@ import {IonButton, IonContent, IonHeader, IonInput, IonLoading, IonPage, IonTitl
 import React from "react";
 
 /**
- * The signup view
+ * The signup view.
  * @constructor
  */
 const SignupPage: React.FC<{
