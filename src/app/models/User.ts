@@ -1,8 +1,5 @@
-import firebase from "firebase/compat";
-
 import {database} from "../database/firebaseConfig";
 import {toast} from "../components";
-import {strategy} from "workbox-streams";
 
 export default class User {
 

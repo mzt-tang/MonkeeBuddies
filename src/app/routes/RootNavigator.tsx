@@ -4,7 +4,7 @@ import {Redirect, Route} from "react-router";
 import {IonReactRouter} from "@ionic/react-router";
 
 import {DashboardController, LoginController, SignupController} from "../controllers";
-import {AuthenticatedUserContext} from "../global/AuthenticatedUserProvider";
+import {AuthenticatedUserContext} from "../global";
 import {database} from "../database/firebaseConfig";
 
 const auth = database.auth();

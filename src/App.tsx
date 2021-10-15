@@ -19,7 +19,7 @@ import '@ionic/react/css/display.css';
 
 /* Theme variables */
 import './app/theme/variables.css';
-import {AuthenticatedUserProvider} from "./app/global/AuthenticatedUserProvider";
+import {AuthenticatedUserProvider} from "./app/global";
 import RootNavigator from "./app/routes/RootNavigator";
 
 const App: React.FC = () => (
