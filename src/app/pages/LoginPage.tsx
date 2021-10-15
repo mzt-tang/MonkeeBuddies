@@ -8,6 +8,7 @@ import {IonButton, IonContent, IonHeader, IonInput, IonPage, IonTitle, IonToolba
 const LoginPage: React.FC<{
     setUsername: React.Dispatch<React.SetStateAction<string>>;
     setPassword: React.Dispatch<React.SetStateAction<string>>;
+    handleLogin: () => void;
 }> = props => (
     <IonPage>
         <IonHeader>
@@ -18,7 +19,7 @@ const LoginPage: React.FC<{
         <IonContent className="ion-padding">
             <IonInput placeholder="Username" onIonChange={(e) => props.setUsername(e.detail.value!)}/>
             <IonInput placeholder="Password" onIonChange={(e) => props.setPassword(e.detail.value!)}/>
-            <IonButton color="primary">Login</IonButton>
+            <IonButton color="primary" onClick={props.handleLogin}>Login</IonButton>
             <IonButton color="secondary" routerLink="/signup">Go to signup</IonButton>
         </IonContent>
     </IonPage>

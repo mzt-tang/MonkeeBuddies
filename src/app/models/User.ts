@@ -3,11 +3,13 @@ import {database} from "../database/firebaseConfig";
 
 export default class User {
 
+    firebase;
+
     /**
      * Initialises firebase
      */
     constructor() {
-        const firebase = database;
+        this.firebase = database;
     }
 
     /**
@@ -17,8 +19,8 @@ export default class User {
      */
     async loginUser(username: string, password: string) {
         try {
-            const res = await firebase.auth().signInWithEmailAndPassword(username, password);
-            console.log(res);
+            const login = await firebase.auth().signInWithEmailAndPassword(username, password);
+            console.log(login);
             return true;
         } catch (e) {
             console.log(e);

@@ -1,7 +1,6 @@
 import firebase from "firebase/compat";
 import "firebase/firestore";
 import "firebase/auth";
-import { initializeApp } from "firebase/app";
 
 // MonkeeBuddies's Firebase configuration
 const firebaseConfig = {
@@ -23,7 +22,7 @@ const firebaseConfig = {
 // Initialize Firebase
 const initialiseFirebase = () => {
     if (firebase.apps.length === 0) {
-        initializeApp(firebaseConfig);
+        firebase.initializeApp(firebaseConfig);
     }else {
         firebase.app(); // if already initialized, use that one
     }
