@@ -14,17 +14,14 @@ export default function SignupController() {
     async function handleSignup() {
         if (username.length === 0 || password.length === 0) {
             toast('Email and password is required');
-            return false;
+            return
         }
 
         const user = new User();
         const signup = await user.signupUser(username, password)
         if (signup) {
             toast('Account successfully created!');
-            return true;
         }
-
-        return false;
     }
 
     return (

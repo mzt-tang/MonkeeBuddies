@@ -5,7 +5,9 @@ import {IonButton, IonContent, IonHeader, IonPage, IonTitle, IonToolbar} from "@
  * The home feed view
  * @constructor
  */
-const DashboardPage: React.FC = () => (
+const DashboardPage: React.FC<{
+    handleSignout: () => void;
+}> = props => (
     <IonPage>
         <IonHeader>
             <IonToolbar>
@@ -14,7 +16,7 @@ const DashboardPage: React.FC = () => (
         </IonHeader>
         <IonContent className="ion-padding">
             <h2>Dashboard</h2>
-            <IonButton color="primary" routerLink="/login">Test Button</IonButton>
+            <IonButton color="primary" onClick={props.handleSignout}>Sign out</IonButton>
         </IonContent>
     </IonPage>
 );

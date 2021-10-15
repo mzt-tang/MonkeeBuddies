@@ -6,13 +6,13 @@ import {strategy} from "workbox-streams";
 
 export default class User {
 
-    db;
+    auth;
 
     /**
-     * Initialises firebase
+     * Initialise authorisation
      */
     constructor() {
-        this.db = database;
+        this.auth = database.auth()
     }
 
     /**
@@ -22,7 +22,7 @@ export default class User {
      */
     async loginUser(username: string, password: string) {
         try {
-            const login = await firebase.auth().signInWithEmailAndPassword(username, password);
+            const login = await this.auth.signInWithEmailAndPassword(username, password);
             console.log(login);
             return true;
         } catch (error) {
@@ -34,13 +34,22 @@ export default class User {
 
     async signupUser(username: string, password: string) {
         try {
-            const signup = await firebase.auth().createUserWithEmailAndPassword(username, password);
+            const signup = await this.auth.createUserWithEmailAndPassword(username, password);
             console.log(signup);
             return true;
         } catch (error) {
             // @ts-ignore
             toast(error.message, 4000);
             return false;
+        }
+    }
+
+    async signoutUser() {
+        try {
+            await this.auth.signOut();
+        } catch (error) {
+            // @ts-ignore
+            toast(error.message, 4000);
         }
     }
 }
