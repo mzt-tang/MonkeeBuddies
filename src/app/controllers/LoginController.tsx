@@ -1,5 +1,5 @@
 import {LoginPage} from "../pages";
-import {useEffect, useState} from "react";
+import {useState} from "react";
 
 /**
  * The login controller/presenter
@@ -9,10 +9,9 @@ export default function LoginController() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
-    useEffect(()=> {
-        console.log(username);
-        console.log(password)
-    }, [username, password]);
+    function handleLogin() {
+
+    }
 
     return (
         <
