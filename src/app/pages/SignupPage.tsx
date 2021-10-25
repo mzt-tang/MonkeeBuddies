@@ -1,4 +1,14 @@
-import {IonButton, IonContent, IonHeader, IonInput, IonLoading, IonPage, IonTitle, IonToolbar} from "@ionic/react";
+import {
+    IonButton, IonCol,
+    IonContent, IonGrid,
+    IonHeader,
+    IonInput, IonItem,
+    IonLoading,
+    IonPage,
+    IonRow,
+    IonTitle,
+    IonToolbar
+} from "@ionic/react";
 import React from "react";
 
 /**
@@ -17,12 +27,25 @@ const SignupPage: React.FC<{
                 <IonTitle>Signup Page</IonTitle>
             </IonToolbar>
         </IonHeader>
-        <IonLoading message="Please wait..." duration={0} isOpen={props.isLoading} />
+        <IonLoading message="Please wait..." duration={0} isOpen={props.isLoading}/>
         <IonContent className="ion-padding">
-            <IonInput placeholder="Email" onIonChange={(e) => props.setUsername(e.detail.value!)}/>
-            <IonInput type="password" placeholder="Password" onIonChange={(e) => props.setPassword(e.detail.value!)}/>
-            <IonButton color="primary" onClick={props.handleSignup}>Register</IonButton>
-            <IonButton color="secondary" routerLink="/login">Go to login</IonButton>
+            <IonGrid className="ion-margin-horizontal">
+                <IonItem>
+                    <IonInput placeholder="Email" onIonChange={(e) => props.setUsername(e.detail.value!)}/>
+                </IonItem>
+                <IonItem>
+                    <IonInput type="password" placeholder="Password"
+                              onIonChange={(e) => props.setPassword(e.detail.value!)}/>
+                </IonItem>
+                <IonRow className="ion-text-wrap ion-margin-vertical">
+                    <IonCol size="6">
+                        <IonButton color="primary" onClick={props.handleSignup}>Register</IonButton>
+                    </IonCol>
+                    <IonCol size="6">
+                        <IonButton color="secondary" routerLink="/login">Go to login</IonButton>
+                    </IonCol>
+                </IonRow>
+            </IonGrid>
         </IonContent>
     </IonPage>
 );

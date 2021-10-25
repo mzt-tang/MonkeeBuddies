@@ -5,7 +5,7 @@ import React from "react";
 
 
 const QRModal: React.FC<{
-    dismiss: () => void;
+    handleDismiss: () => void;
     handleScan: () => void;
     handleError: () => void;
 }> = props => (
@@ -14,7 +14,7 @@ const QRModal: React.FC<{
             <IonToolbar>
                 <IonTitle>Scan Friend QR</IonTitle>
                 <IonButtons slot="end">
-                    <IonButton onClick={ props.dismiss }>Close</IonButton>
+                    <IonButton onClick={ props.handleDismiss }>Close</IonButton>
                 </IonButtons>
             </IonToolbar>
         </IonHeader>

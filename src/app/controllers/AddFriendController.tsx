@@ -33,6 +33,7 @@ export default function AddFriendController() {
         if (data) {
             setQRData(data);
             console.log("webmodal")
+            toast("webmodal")
             console.log(data.text);
             console.log(data);
             dismissWebModal();
@@ -55,7 +56,8 @@ export default function AddFriendController() {
 
             if (data) {
                 setQRData(data);
-                console.log("not web")
+                console.log("not web");
+                toast("not web")
                 console.log(data);
                 console.log(data.text)
                 dismissWebModal();
@@ -69,9 +71,13 @@ export default function AddFriendController() {
         }
     }
 
+    const handleDismiss = () => {
+      dismissWebModal();
+    }
+
     const [ presentWebModal, dismissWebModal ] = useIonModal(QRModal, {
 
-        dismiss: () => dismissWebModal(),
+        dismiss: handleDismiss,
         scan: handleScan,
         error: handleError
     });
@@ -83,30 +89,29 @@ export default function AddFriendController() {
                     <IonButtons slot="start">
                         <IonBackButton/>
                     </IonButtons>
-                    <IonTitle>Generate QR Code</IonTitle>
+                    <IonTitle>My QR Code</IonTitle>
                 </IonToolbar>
             </IonHeader>
             <IonContent fullscreen>
                 <IonGrid>
 
-                    <IonRow>
+                    <IonRow className="ion-text-center ion-margin-top">
                         <IonCol size="12">
                             <IonLabel className="ion-text-wrap">
-                                <h1>You can generate a QR code to store or share with friends.</h1>
-                                <p>You'll see a live preview of the QR Code</p>
+                                <h2>Scan my QR code to add me as a friend</h2>
                             </IonLabel>
                         </IonCol>
                     </IonRow>
 
-                    <IonRow className="ion-text-center ion-margin-top">
+                    <IonRow className="ion-text-center">
                         <IonCol size="12">
                             <QRCode value={user.uid}/>
                         </IonCol>
                     </IonRow>
 
-                    <IonRow>
+                    <IonRow className="ion-text-center ion-margin">
                         <IonCol size="12">
-                            <IonButton expand="block" onClick={scanQR}></IonButton>
+                            <IonButton expand="block" onClick={scanQR}>Scan QR Code</IonButton>
                         </IonCol>
                     </IonRow>
                 </IonGrid>
