@@ -22,8 +22,7 @@ export default class User {
      */
     async loginUser(username: string, password: string) {
         try {
-            const login = await this.auth.signInWithEmailAndPassword(username, password);
-            console.log(login);
+            await this.auth.signInWithEmailAndPassword(username, password);
             return true;
         } catch (error) {
             // @ts-ignore
@@ -39,8 +38,7 @@ export default class User {
      */
     async signupUser(username: string, password: string) {
         try {
-            const signup = await this.auth.createUserWithEmailAndPassword(username, password);
-            console.log(signup);
+            await this.auth.createUserWithEmailAndPassword(username, password);
             return true;
         } catch (error) {
             // @ts-ignore

@@ -3,7 +3,7 @@ import {IonLoading, IonRouterOutlet} from "@ionic/react";
 import {Redirect, Route} from "react-router";
 import {IonReactRouter} from "@ionic/react-router";
 
-import {DashboardController, LoginController, SignupController} from "../controllers";
+import {DashboardController, LoginController, SignupController, AddFriendController} from "../controllers";
 import {AuthenticatedUserContext} from "../global";
 import {database} from "../database/firebaseConfig";
 
@@ -51,7 +51,7 @@ const RootNavigator: React.FC = () => {
         <IonReactRouter>
             <IonLoading message="Please wait..." duration={0} isOpen={isLoading} />
             <IonRouterOutlet>
-                <Route path="/dashboard" component={DashboardController} exact={true}/>
+                <Route path="/dashboard" component={AddFriendController} exact={true}/>
                 <Redirect from="/" to="/dashboard" exact={true}/>
             </IonRouterOutlet>
         </IonReactRouter>
