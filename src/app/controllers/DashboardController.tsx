@@ -1,3 +1,5 @@
+import React from "react";
+
 import {DashboardPage} from "../pages";
 import {User} from "../models";
 
@@ -8,8 +10,7 @@ import {User} from "../models";
 export default function DashboardController() {
 
     async function handleSignout() {
-        const user = new User();
-        await user.signoutUser();
+        await User.signoutUser();
     }
 
     return (

@@ -6,6 +6,7 @@ import {IonReactRouter} from "@ionic/react-router";
 import {DashboardController, LoginController, SignupController, AddFriendController} from "../controllers";
 import {AuthenticatedUserContext} from "../global";
 import {database} from "../database/firebaseConfig";
+import {User} from "../models";
 
 const auth = database.auth();
 
@@ -21,7 +22,7 @@ const RootNavigator: React.FC = () => {
         // onAuthStateChanged returns an unsubscriber
         const unsubscribeAuth = auth.onAuthStateChanged(async authenticatedUser => {
             try {
-                await (authenticatedUser ? setUser(authenticatedUser) : setUser(null));
+                await (authenticatedUser ? setUser(new User(authenticatedUser)) : setUser(null));
                 setIsLoading(false)
             } catch (error) {
                 console.log(error);
@@ -51,7 +52,7 @@ const RootNavigator: React.FC = () => {
         <IonReactRouter>
             <IonLoading message="Please wait..." duration={0} isOpen={isLoading} />
             <IonRouterOutlet>
-                <Route path="/dashboard" component={AddFriendController} exact={true}/>
+                <Route path="/dashboard" component={DashboardController} exact={true}/>
                 <Redirect from="/" to="/dashboard" exact={true}/>
             </IonRouterOutlet>
         </IonReactRouter>

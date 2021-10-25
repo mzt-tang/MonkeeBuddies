@@ -1,4 +1,5 @@
 import {createContext, useState} from "react";
+import {User} from "../models";
 
 /**
  * Context hook for detecting whether or a user is logged in.
@@ -11,7 +12,7 @@ export const AuthenticatedUserContext = createContext({});
  * @constructor
  */
 export const AuthenticatedUserProvider = ({ children }:any) => {
-    const [user, setUser] = useState(null);
+    const [user, setUser] = useState<User | null>(null);
 
     return (
         <AuthenticatedUserContext.Provider value={{ user, setUser }}>

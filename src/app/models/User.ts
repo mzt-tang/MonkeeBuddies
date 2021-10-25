@@ -1,18 +1,20 @@
-import {database} from "../database/firebaseConfig";
 import {toast} from "../components";
+import firebase from "firebase/compat";
+import {database} from "../database/firebaseConfig";
 
 /**
  * The user model, handles all authorisation functions.
  */
 export default class User {
 
-    auth;
+    private user: firebase.User;
+    private static auth: firebase.auth.Auth = database.auth();
 
     /**
      * Initialise authorisation.
      */
-    constructor() {
-        this.auth = database.auth()
+    constructor(user: firebase.User) {
+        this.user = user;
     }
 
     /**
@@ -20,7 +22,7 @@ export default class User {
      * @param username The email to log in.
      * @param password The password.
      */
-    async loginUser(username: string, password: string) {
+    static async loginUser(username: string, password: string) {
         try {
             await this.auth.signInWithEmailAndPassword(username, password);
             return true;
@@ -36,7 +38,7 @@ export default class User {
      * @param username The email to register.
      * @param password The password.
      */
-    async signupUser(username: string, password: string) {
+    static async signupUser(username: string, password: string) {
         try {
             await this.auth.createUserWithEmailAndPassword(username, password);
             return true;
@@ -50,12 +52,16 @@ export default class User {
     /**
      * Signs out the user.
      */
-    async signoutUser() {
+    static async signoutUser() {
         try {
             await this.auth.signOut();
         } catch (error) {
             // @ts-ignore
             toast(error.message, 4000);
         }
+    }
+
+    getUserID(): string {
+        return this.user.uid;
     }
 }

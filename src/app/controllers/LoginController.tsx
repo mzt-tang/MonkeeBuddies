@@ -1,8 +1,8 @@
-import {LoginPage} from "../pages";
-import {useState} from "react";
+import React, {useState} from "react";
 
-import {User} from "../models";
+import {LoginPage} from "../pages";
 import {toast} from "../components";
+import {User} from "../models";
 
 /**
  * The login controller/presenter.
@@ -20,10 +20,9 @@ export default function LoginController() {
             return;
         }
 
-        const user = new User();
-        const login = await user.loginUser(username, password)
+        const login = await User.loginUser(username, password)
         if (login) {
-            toast('Successful login!')
+            toast('Welcome back!')
         }
 
         setIsLoading(false);

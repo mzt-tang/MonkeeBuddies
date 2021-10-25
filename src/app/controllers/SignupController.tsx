@@ -1,5 +1,6 @@
+import React, {useState} from "react";
+
 import {SignupPage} from "../pages";
-import {useState} from "react";
 import {toast} from "../components";
 import {User} from "../models";
 
@@ -19,8 +20,7 @@ export default function SignupController() {
             return;
         }
 
-        const user = new User();
-        const signup = await user.signupUser(username, password)
+        const signup = await User.signupUser(username, password)
         if (signup) {
             toast('Account successfully created!');
         }
