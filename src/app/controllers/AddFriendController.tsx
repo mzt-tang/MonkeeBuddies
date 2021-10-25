@@ -1,5 +1,6 @@
-import React, {useContext, useState} from "react";
+import React, {useContext, useRef, useState} from "react";
 import {
+    getPlatforms,
     IonBackButton,
     IonButton, IonButtons,
     IonCol,
@@ -17,29 +18,63 @@ import { BarcodeScanner } from '@ionic-native/barcode-scanner';
 import QRCode from "react-qr-code";
 
 import {AddFriendPage} from "../pages";
-import {toast} from "../components";
+import {QRModal, toast} from "../components";
 import {AuthenticatedUserContext} from "../global";
 
 
 export default function AddFriendController() {
-    const [data, setData] = useState<any>("");
-    const [present, dismiss] = useIonModal(QRCode);
     const {user} = useContext<any>(AuthenticatedUserContext);
+    const pageRef = useRef();
+
+    const [ QRData, setQRData ] = useState<any>(false);
+
+    const handleScan = (data: any) => {
+
+        if (data) {
+            setQRData(data);
+            console.log("webmodal")
+            console.log(data.text);
+            console.log(data);
+            dismissWebModal();
+        }
+    }
+
+    const handleError = (err: any) => {
+
+        console.error(err)
+    }
 
     const scanQR = async () => {
 
-        //const platforms = getPlatforms();
-        //const isWeb = (platforms.includes("desktop") || platforms.includes("mobileweb") || platforms.includes("pwa"));
+        const platforms = getPlatforms();
+        const isWeb = (platforms.includes("desktop") || platforms.includes("mobileweb") || platforms.includes("pwa"));
 
-        //if (!isWeb) {
+        if (!isWeb) {
 
-            const dataa = await BarcodeScanner.scan();
+            const data = await BarcodeScanner.scan();
 
-            if (dataa) {
-                setData(dataa);
+            if (data) {
+                setQRData(data);
+                console.log("not web")
+                console.log(data);
+                console.log(data.text)
+                dismissWebModal();
             }
-        //}
+        } else {
+
+            presentWebModal({
+
+                presentingElement: pageRef.current
+            });
+        }
     }
+
+    const [ presentWebModal, dismissWebModal ] = useIonModal(QRModal, {
+
+        dismiss: () => dismissWebModal(),
+        scan: handleScan,
+        error: handleError
+    });
 
     return (
         <IonPage>

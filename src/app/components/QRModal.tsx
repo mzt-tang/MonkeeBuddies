@@ -36,3 +36,5 @@ const QRModal: React.FC<{
         </IonContent>
     </IonPage>
 );
+
+export default QRModal;
