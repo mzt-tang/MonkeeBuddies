@@ -1,28 +1,28 @@
 import React, {useContext, useEffect, useState} from "react";
-import {IonLoading, IonRouterOutlet} from "@ionic/react";
-import {Redirect, Route} from "react-router";
+import {IonLoading} from "@ionic/react";
+import {Redirect, Route, Switch} from "react-router";
 import {IonReactRouter} from "@ionic/react-router";
 
-import {DashboardController, LoginController, SignupController, AddFriendController} from "../controllers";
+import {LoginController, SignupController} from "../controllers";
 import {AuthenticatedUserContext} from "../global";
 import {database} from "../database/firebaseConfig";
-import {User} from "../models";
+import {HomeNavigator} from "./index";
 
 const auth = database.auth();
 
 /**
  * The root navigation stack, handles the login/sign in/sign out and splits the authentication and app stacks.
- * @constructor
+ * @constructor .
  */
 const RootNavigator: React.FC = () => {
-    const {user, setUser} = useContext<any>(AuthenticatedUserContext);
+    const {setUser} = useContext<any>(AuthenticatedUserContext);
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         // onAuthStateChanged returns an unsubscriber
         const unsubscribeAuth = auth.onAuthStateChanged(async authenticatedUser => {
             try {
-                await (authenticatedUser ? setUser(new User(authenticatedUser)) : setUser(null));
+                await (authenticatedUser ? setUser(authenticatedUser) : setUser(null));
                 setIsLoading(false)
             } catch (error) {
                 console.log(error);
@@ -33,30 +33,20 @@ const RootNavigator: React.FC = () => {
         return unsubscribeAuth;
     }, [setUser]);
 
-    // The authentication stack
-    if (!user) {
-        return (
-            <IonReactRouter>
-                <IonLoading message="Please wait..." duration={0} isOpen={isLoading} />
-                <IonRouterOutlet>
-                    <Route path="/login" component={LoginController} exact={true}/>
-                    <Route path="/signup" component={SignupController} exact={true}/>
-                    <Redirect from="/" to="/login" exact={true}/>
-                </IonRouterOutlet>
-            </IonReactRouter>
-        )
-    }
 
     // The app stack
     return (
         <IonReactRouter>
-            <IonLoading message="Please wait..." duration={0} isOpen={isLoading} />
-            <IonRouterOutlet>
-                <Route path="/dashboard" component={DashboardController} exact={true}/>
-                <Redirect from="/" to="/dashboard" exact={true}/>
-            </IonRouterOutlet>
+            <IonLoading message="Please wait..." duration={0} isOpen={isLoading}/>
+            <Switch>
+                <Route path="/login" component={LoginController} exact={true}/>
+                <Route path="/signup" component={SignupController} exact={true}/>
+                <Route path="/app" component={HomeNavigator}/>
+                <Redirect from="/" to="/app/dashboard" exact={true}/>
+            </Switch>
         </IonReactRouter>
     );
+
 };
 
 export default RootNavigator;

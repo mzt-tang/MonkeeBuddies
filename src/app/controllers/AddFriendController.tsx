@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useContext, useState} from "react";
 import {
     IonButton,
     IonCol,
@@ -16,11 +16,13 @@ import QRCode from "react-qr-code";
 
 import {AddFriendPage} from "../pages";
 import {toast} from "../components";
+import {AuthenticatedUserContext} from "../global";
 
 
 export default function AddFriendController() {
     const [data, setData] = useState("");
-    const [present, dismiss] = useIonModal(QRCode)
+    const [present, dismiss] = useIonModal(QRCode);
+    const {user} = useContext<any>(AuthenticatedUserContext);
 
     const handleAdd = async () => {
 
@@ -71,7 +73,7 @@ export default function AddFriendController() {
 
                     <IonRow className="ion-text-center ion-margin-top">
                         <IonCol size="12">
-                            <QRCode value={ "data" } />
+                            <QRCode value={ user.uid } />
                         </IonCol>
                     </IonRow>
 

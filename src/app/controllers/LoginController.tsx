@@ -1,8 +1,10 @@
-import React, {useState} from "react";
+import React, {useContext, useState} from "react";
 
 import {LoginPage} from "../pages";
 import {toast} from "../components";
 import {User} from "../models";
+import {Redirect} from "react-router";
+import {AuthenticatedUserContext} from "../global";
 
 /**
  * The login controller/presenter.
@@ -12,6 +14,11 @@ export default function LoginController() {
     const [username, setUsername] = useState<string>('');
     const [password, setPassword] = useState<string>('')
     const [isLoading, setIsLoading] = useState<boolean>(false);
+    const {user} = useContext<any>(AuthenticatedUserContext);
+
+    if (user !== null) {
+        return <Redirect to="/app/dashboard"/>
+    }
 
     async function handleLogin() {
         setIsLoading(true);

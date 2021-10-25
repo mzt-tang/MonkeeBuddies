@@ -7,14 +7,12 @@ import {database} from "../database/firebaseConfig";
  */
 export default class User {
 
-    private user: firebase.User;
     private static auth: firebase.auth.Auth = database.auth();
 
     /**
      * Initialise authorisation.
      */
-    constructor(user: firebase.User) {
-        this.user = user;
+    constructor() {
     }
 
     /**
@@ -61,7 +59,4 @@ export default class User {
         }
     }
 
-    getUserID(): string {
-        return this.user.uid;
-    }
 }
