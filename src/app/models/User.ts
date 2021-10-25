@@ -10,12 +10,6 @@ export default class User {
     private static auth: firebase.auth.Auth = database.auth();
 
     /**
-     * Initialise authorisation.
-     */
-    constructor() {
-    }
-
-    /**
      * Logs in a user if it exists, otherwise show error message.
      * @param username The email to log in.
      * @param password The password.

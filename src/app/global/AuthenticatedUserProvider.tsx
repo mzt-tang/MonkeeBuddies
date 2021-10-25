@@ -1,5 +1,4 @@
 import {createContext, useState} from "react";
-import {User} from "../models";
 
 /**
  * Context hook for detecting whether or a user is logged in.

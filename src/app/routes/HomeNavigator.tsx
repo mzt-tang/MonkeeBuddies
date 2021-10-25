@@ -1,10 +1,17 @@
 import React, {useContext} from "react";
-import {IonIcon, IonLabel, IonRouterOutlet, IonTabBar, IonTabButton, IonTabs} from "@ionic/react";
+import {IonIcon, IonRouterOutlet, IonTabBar, IonTabButton, IonTabs} from "@ionic/react";
 import {Redirect, Route} from "react-router";
+import {homeOutline, pawOutline, peopleOutline} from "ionicons/icons";
 
 import {AddFriendController, DashboardController} from "../controllers";
 import {AuthenticatedUserContext} from "../global";
 
+import './floating-tab-bar.css';
+
+/**
+ * The Home navigator.
+ * @constructor
+ */
 const HomeNavigator: React.FC = () => {
     const {user} = useContext<any>(AuthenticatedUserContext);
 
@@ -22,13 +29,13 @@ const HomeNavigator: React.FC = () => {
             </IonRouterOutlet>
             <IonTabBar slot="bottom">
                 <IonTabButton tab="dashboard" href="/app/dashboard">
-                    <IonIcon name="home-outline"/>
+                    <IonIcon icon={homeOutline}/>
                 </IonTabButton>
                 <IonTabButton tab="my-monkey" href="/app/my-monkey">
-                    <IonIcon name="paw-outline"/>
+                    <IonIcon icon={pawOutline}/>
                 </IonTabButton>
                 <IonTabButton tab="friends" href="/app/friends">
-                    <IonIcon name="people-outline"/>
+                    <IonIcon icon={peopleOutline}/>
                 </IonTabButton>
             </IonTabBar>
         </IonTabs>
