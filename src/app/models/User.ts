@@ -8,12 +8,14 @@ import {database} from "../database/firebaseConfig";
 export default class User {
 
     private static auth: firebase.auth.Auth = database.auth();
+    readonly userId: string;
     readonly name: string;
     readonly monkeyName: string;
     readonly monkeyImage: string;
     readonly activity: string[];
 
-    constructor(name: string, monkeyName: string, monkeyImage: string, activity: string[]) {
+    constructor(userId: string, name: string, monkeyName: string, monkeyImage: string, activity: string[]) {
+        this.userId = userId;
         this.name = name;
         this.monkeyName = monkeyName;
         this.monkeyImage = monkeyImage;
@@ -83,7 +85,7 @@ export default class User {
             .collection('users')
             .doc(id).get().then(async snapshot => {
             const userInfo = await snapshot.data();
-            setUser(new User(userInfo?.name, userInfo?.monkeyName, userInfo?.monkeyImage, userInfo?.activity));
+            setUser(new User(id, userInfo?.name, userInfo?.monkeyName, userInfo?.monkeyImage, userInfo?.activity));
         });
     }
 
@@ -98,7 +100,7 @@ export default class User {
             for (let i = 0; i < friends.length; i++) {
                 const friend = await database.firestore().collection('users').doc(friends[i]).get();
                 const friendData = friend.data();
-                friendList.push(new User(friendData?.name, friendData?.monkeyName, friendData?.monkeyImage, friendData?.activity));
+                friendList.push(new User(friends[i], friendData?.name, friendData?.monkeyName, friendData?.monkeyImage, friendData?.activity));
             }
             setFriendsList(friendList);
         });
@@ -109,12 +111,21 @@ export default class User {
             .collection('users')
             .doc(friendId).get().then(async snapshot => {
                 if (snapshot.exists) {
+                    // add the user to the friend's friend list
+                    await database.firestore().collection('users').doc(friendId).update({
+                        friends: firebase.firestore.FieldValue.arrayRemove(userId)
+                    });
+                    await database.firestore().collection('users').doc(friendId).update({
+                        friends: firebase.firestore.FieldValue.arrayUnion(userId)
+                    });
+
+                    // add the friend to the user's friend list
                     await database.firestore().collection('users').doc(userId).update({
                         friends: firebase.firestore.FieldValue.arrayRemove(friendId)
-                    })
+                    });
                     await database.firestore().collection('users').doc(userId).update({
                         friends: firebase.firestore.FieldValue.arrayUnion(friendId)
-                    })
+                    });
                     toast("Friend successfully added!");
                 } else {
                     toast("User doesn't exist! Please scan a valid QR code!");

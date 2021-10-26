@@ -19,7 +19,7 @@ import {hideTabs, showTabs} from "../routes";
 
 
 export default function UserProfileController() {
-    const {id} = useParams<{id: string}>();
+    const {id} = useParams<{ id: string }>();
     const [user, setUser] = useState<User>();
 
     useEffect(() => {
@@ -46,40 +46,19 @@ export default function UserProfileController() {
                 {/*monkey image*/}
                 <IonImg src={user?.monkeyImage}/>
 
-                <IonGrid>
-                    <IonRow>
-                        {/*profile name*/}
-                        <IonLabel>
-                            {user?.name}
-                        </IonLabel>
-                    </IonRow>
-                    <IonRow>
-                        {/*add friend buttons*/}
-
-                        {/*button 1*/}
-                        <IonCol size="6">
-                            <IonButton expand="block">
-                                <IonIcon />
-                            </IonButton>
-                        </IonCol>
-
-                        {/*button 2*/}
-                        <IonCol size="6">
-                            <IonButton expand="block">
-                                <IonIcon />
-                            </IonButton>
-                        </IonCol>
-                    </IonRow>
-                    <IonRow>
-                        <IonCol size="12">
-                            <IonItem>
-                                <IonList>
-                                    <IonListHeader>Activity</IonListHeader>
-                                </IonList>
-                            </IonItem>
-                        </IonCol>
-                    </IonRow>
-                </IonGrid>
+                <IonCard className="ion-padding ion-margin">
+                    <IonCardHeader>
+                        <IonCardSubtitle>{user?.monkeyName}</IonCardSubtitle>
+                        <IonCardTitle>{user?.name}</IonCardTitle>
+                    </IonCardHeader>
+                    <IonCardContent className="ion-justify-content-center">
+                        <IonItem className="ion-justify-content-center">
+                            <IonList>
+                                <IonListHeader>Activity</IonListHeader>
+                            </IonList>
+                        </IonItem>
+                    </IonCardContent>
+                </IonCard>
             </IonContent>
         </IonPage>
     );

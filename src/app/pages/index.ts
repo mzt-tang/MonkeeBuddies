@@ -3,6 +3,7 @@ import LoginPage from "./LoginPage";
 import SignupPage from "./SignupPage";
 import AddFriendPage from "./AddFriendPage";
 import UserProfilePage from "./UserProfilePage";
+import FriendsPage from "./FriendsPage";
 
 export {
     DashboardPage,
@@ -10,4 +11,5 @@ export {
     SignupPage,
     AddFriendPage,
     UserProfilePage,
+    FriendsPage,
 }

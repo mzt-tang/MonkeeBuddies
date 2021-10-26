@@ -33,7 +33,7 @@ const AddFriendPage: React.FC<{
             <IonGrid>
                 <IonRow className="ion-text-center ion-padding">
                     <IonCol size="12">
-                        <IonCard color="dark">
+                        <IonCard color="light">
                             <IonCardHeader>
                                 <IonCardTitle>
                                     Scan my QR code to add me as a friend
