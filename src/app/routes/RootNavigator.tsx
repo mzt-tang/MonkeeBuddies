@@ -7,6 +7,7 @@ import {LoginController, SignupController} from "../controllers";
 import {AuthenticatedUserContext} from "../global";
 import {database} from "../database/firebaseConfig";
 import {HomeNavigator} from "./index";
+import { match } from "react-router-dom";
 
 const auth = database.auth();
 
@@ -39,10 +40,10 @@ const RootNavigator: React.FC = () => {
         <IonReactRouter>
             <IonLoading message="Please wait..." duration={0} isOpen={isLoading}/>
             <Switch>
-                <Route path="/login" component={LoginController} exact={true}/>
-                <Route path="/signup" component={SignupController} exact={true}/>
+                <Route exact path="/login" component={LoginController}/>
+                <Route exact path="/signup" component={SignupController}/>
                 <Route path="/app" component={HomeNavigator}/>
-                <Redirect from="/" to="/app/dashboard" exact={true}/>
+                <Redirect exact from="/" to="/app/dashboard"/>
             </Switch>
         </IonReactRouter>
     );

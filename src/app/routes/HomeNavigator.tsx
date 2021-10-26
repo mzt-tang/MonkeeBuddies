@@ -1,9 +1,9 @@
 import React, {useContext} from "react";
 import {IonIcon, IonRouterOutlet, IonTabBar, IonTabButton, IonTabs} from "@ionic/react";
-import {Redirect, Route} from "react-router";
+import {Redirect, Route} from "react-router-dom";
 import {homeOutline, pawOutline, peopleOutline} from "ionicons/icons";
 
-import {AddFriendController, DashboardController} from "../controllers";
+import {AddFriendController, DashboardController, FriendsController, UserProfileController} from "../controllers";
 import {AuthenticatedUserContext} from "../global";
 
 import './floating-tab-bar.css';
@@ -23,9 +23,12 @@ const HomeNavigator: React.FC = () => {
     return (
         <IonTabs>
             <IonRouterOutlet>
-                <Route path="/app/dashboard" component={DashboardController} exact={true}/>
-                <Route path="/app/my-monkey" component={AddFriendController} exact={true}/>
-                <Route path="/app/friends" component={AddFriendController} exact={true}/>
+                <Route exact path="/app/dashboard" component={DashboardController}/>
+                <Route exact path="/app/my-monkey" component={AddFriendController}/>
+                <Route exact path="/app/friends" component={FriendsController}/>
+                <Route exact path="/app/friends/add" component={AddFriendController}/>
+                <Route path="/app/users/:id" component={UserProfileController}/>
+                <Route exact path="/app/settings"/>
             </IonRouterOutlet>
             <IonTabBar slot="bottom">
                 <IonTabButton tab="dashboard" href="/app/dashboard">
@@ -44,3 +47,17 @@ const HomeNavigator: React.FC = () => {
 };
 
 export default HomeNavigator;
+
+export function hideTabs() {
+    const tabsEl = document.querySelector('ion-tab-bar');
+    if (tabsEl) {
+        tabsEl.hidden = true;
+    }
+}
+
+export function showTabs() {
+    const tabsEl = document.querySelector('ion-tab-bar');
+    if (tabsEl) {
+        tabsEl.hidden = false;
+    }
+}

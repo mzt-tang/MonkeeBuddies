@@ -8,6 +8,17 @@ import {database} from "../database/firebaseConfig";
 export default class User {
 
     private static auth: firebase.auth.Auth = database.auth();
+    public name: string;
+    public monkeyName: string;
+    readonly monkeyImage: string;
+    readonly posts: string[];
+
+    constructor(name: string, monkeyName: string, monkeyImage: string, posts: string[]) {
+        this.name = name;
+        this.monkeyName = monkeyName;
+        this.monkeyImage = monkeyImage;
+        this.posts = posts;
+    }
 
     /**
      * Logs in a user if it exists, otherwise show error message.
@@ -51,6 +62,15 @@ export default class User {
             // @ts-ignore
             toast(error.message, 4000);
         }
+    }
+
+    static getUserById(id: string, setUser: React.Dispatch<React.SetStateAction<User | undefined>>) {
+        database.firestore()
+            .collection('users')
+            .doc(id).get().then(async snapshot => {
+            const userInfo = await snapshot.data();
+            setUser(new User(userInfo?.name, userInfo?.monkeyName, userInfo?.monkeyImage, userInfo?.posts));
+        });
     }
 
 }

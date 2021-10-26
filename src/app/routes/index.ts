@@ -1,7 +1,9 @@
 import RootNavigator from "./RootNavigator";
-import HomeNavigator from "./HomeNavigator";
+import HomeNavigator, { hideTabs, showTabs } from "./HomeNavigator";
 
 export {
     RootNavigator,
     HomeNavigator,
+    hideTabs,
+    showTabs,
 }
