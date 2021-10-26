@@ -4,7 +4,7 @@ import React from "react";
 
 
 
-const QRModal: React.FC<{
+const QrWebScanModal: React.FC<{
     handleDismiss: () => void;
     handleScan: () => void;
     handleError: () => void;
@@ -37,4 +37,4 @@ const QRModal: React.FC<{
     </IonPage>
 );
 
-export default QRModal;
+export default QrWebScanModal;

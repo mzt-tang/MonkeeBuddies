@@ -22,7 +22,9 @@ export default function UserProfileController() {
     const {id} = useParams<{id: string}>();
     const [user, setUser] = useState<User>();
 
-    User.getUserById(id, setUser);
+    useEffect(() => {
+        User.getUserById(id, setUser);
+    }, [id]);
 
     //Show and hide the navigation tabs when in id
     useIonViewWillEnter(() => hideTabs());

@@ -6,13 +6,13 @@ import {
 import { BarcodeScanner } from '@ionic-native/barcode-scanner';
 
 import {AddFriendPage} from "../pages";
-import {QRModal, toast} from "../components";
+import {QrWebScanModal, toast} from "../components";
 import {AuthenticatedUserContext} from "../global";
+import {User} from "../models";
 
 
 export default function AddFriendController() {
     const {user} = useContext<any>(AuthenticatedUserContext);
-    const [ QRData, setQRData ] = useState<any>(false);
     const pageRef = useRef();
 
     async function scanQR() {
@@ -25,11 +25,7 @@ export default function AddFriendController() {
             const data = await BarcodeScanner.scan();
 
             if (data) {
-                setQRData(data);
-                console.log("not web");
-                toast("not web");
-                console.log(data);
-                console.log(data.text);
+                await User.addFriend(user.uid, data.text);
                 dismissWebModal();
             }
         } else {
@@ -39,9 +35,9 @@ export default function AddFriendController() {
         }
     }
 
-    function handleScan(data: any) {
+    async function handleScan(data: any) {
         if (data) {
-            setQRData(data);
+            await User.addFriend(user.uid, data.text);
             dismissWebModal();
         }
     }
@@ -54,7 +50,7 @@ export default function AddFriendController() {
         dismissWebModal();
     }
 
-    const [ presentWebModal, dismissWebModal ] = useIonModal(QRModal, {
+    const [ presentWebModal, dismissWebModal ] = useIonModal(QrWebScanModal, {
         handleDismiss: handleDismiss,
         handleScan: handleScan,
         handleError: handleError

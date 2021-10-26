@@ -47,7 +47,7 @@ const AddFriendPage: React.FC<{
                     </IonCol>
                 </IonRow>
 
-                <IonRow className="ion-text-center ion-margin">
+                <IonRow className="ion-margin">
                     <IonCol size="12">
                         <IonButton expand="block" onClick={props.scanQr}>Scan QR Code</IonButton>
                     </IonCol>

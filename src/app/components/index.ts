@@ -1,7 +1,7 @@
-import QRModal from "./QRModal";
+import QrWebScanModal from "./QrWebScanModal";
 import toast from "./Toast";
 
 export {
     toast,
-    QRModal,
+    QrWebScanModal,
 }

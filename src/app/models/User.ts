@@ -8,16 +8,16 @@ import {database} from "../database/firebaseConfig";
 export default class User {
 
     private static auth: firebase.auth.Auth = database.auth();
-    public name: string;
-    public monkeyName: string;
+    readonly name: string;
+    readonly monkeyName: string;
     readonly monkeyImage: string;
-    readonly posts: string[];
+    readonly activity: string[];
 
-    constructor(name: string, monkeyName: string, monkeyImage: string, posts: string[]) {
+    constructor(name: string, monkeyName: string, monkeyImage: string, activity: string[]) {
         this.name = name;
         this.monkeyName = monkeyName;
         this.monkeyImage = monkeyImage;
-        this.posts = posts;
+        this.activity = activity;
     }
 
     /**
@@ -41,9 +41,23 @@ export default class User {
      * @param username The email to register.
      * @param password The password.
      */
-    static async signupUser(username: string, password: string) {
+    static async signupUser(username: string, password: string, name: string, monkeyName: string) {
         try {
-            await this.auth.createUserWithEmailAndPassword(username, password);
+            await this.auth.createUserWithEmailAndPassword(username, password).then(async cred => {
+
+                // Get a random monkey image
+                const doc = await database.firestore().collection('monkeys').doc('images').get();
+                const monkeyList = doc.data()?.list;
+                const randomMonkey: string = monkeyList[Math.floor(Math.random() * monkeyList.length)];
+
+                return database.firestore().collection('users').doc(cred.user?.uid).set({
+                    name: name,
+                    monkeyName: monkeyName,
+                    monkeyImage: randomMonkey,
+                    friends: [],
+                    activity: [],
+                });
+            });
             return true;
         } catch (error) {
             // @ts-ignore
@@ -69,7 +83,42 @@ export default class User {
             .collection('users')
             .doc(id).get().then(async snapshot => {
             const userInfo = await snapshot.data();
-            setUser(new User(userInfo?.name, userInfo?.monkeyName, userInfo?.monkeyImage, userInfo?.posts));
+            setUser(new User(userInfo?.name, userInfo?.monkeyName, userInfo?.monkeyImage, userInfo?.activity));
+        });
+    }
+
+    static getUserFriends(userId: string, setFriendsList: React.Dispatch<React.SetStateAction<User[]>>) {
+        database.firestore()
+            .collection('users')
+            .doc(userId).onSnapshot(async snapshot => {
+            const friends = await snapshot.data()?.friends;
+
+            const friendList = [];
+
+            for (let i = 0; i < friends.length; i++) {
+                const friend = await database.firestore().collection('users').doc(friends[i]).get();
+                const friendData = friend.data();
+                friendList.push(new User(friendData?.name, friendData?.monkeyName, friendData?.monkeyImage, friendData?.activity));
+            }
+            setFriendsList(friendList);
+        });
+    }
+
+    static addFriend(userId: string, friendId: string) {
+        return database.firestore()
+            .collection('users')
+            .doc(friendId).get().then(async snapshot => {
+                if (snapshot.exists) {
+                    await database.firestore().collection('users').doc(userId).update({
+                        friends: firebase.firestore.FieldValue.arrayRemove(friendId)
+                    })
+                    await database.firestore().collection('users').doc(userId).update({
+                        friends: firebase.firestore.FieldValue.arrayUnion(friendId)
+                    })
+                    toast("Friend successfully added!");
+                } else {
+                    toast("User doesn't exist! Please scan a valid QR code!");
+                }
         });
     }
 

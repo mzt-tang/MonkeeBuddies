@@ -16,6 +16,8 @@ import React from "react";
  * @constructor
  */
 const SignupPage: React.FC<{
+    setName: React.Dispatch<React.SetStateAction<string>>;
+    setMonkeyName: React.Dispatch<React.SetStateAction<string>>;
     setUsername: React.Dispatch<React.SetStateAction<string>>;
     setPassword: React.Dispatch<React.SetStateAction<string>>;
     handleSignup: () => void;
@@ -30,6 +32,12 @@ const SignupPage: React.FC<{
         <IonLoading message="Please wait..." duration={0} isOpen={props.isLoading}/>
         <IonContent className="ion-padding">
             <IonGrid className="ion-margin-horizontal">
+                <IonItem>
+                    <IonInput placeholder="Your Name (Michael Tang)" onIonChange={(e) => props.setName(e.detail.value!)}/>
+                </IonItem>
+                <IonItem>
+                    <IonInput placeholder="Your Monkey's Name (George)" onIonChange={(e) => props.setMonkeyName(e.detail.value!)}/>
+                </IonItem>
                 <IonItem>
                     <IonInput placeholder="Email" onIonChange={(e) => props.setUsername(e.detail.value!)}/>
                 </IonItem>
