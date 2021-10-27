@@ -3,6 +3,8 @@ import React, {useContext, useState} from "react";
 import {User} from "../models";
 import {SettingsPage} from "../pages";
 import {AuthenticatedUserContext} from "../global";
+import {useIonViewDidLeave, useIonViewWillEnter} from "@ionic/react";
+import {hideTabs, showTabs} from "../routes";
 
 
 export default function SettingsController() {
@@ -30,6 +32,11 @@ export default function SettingsController() {
         await User.signoutUser();
         setIsLoading(false);
     }
+
+    //Show and hide the navigation tabs when in id
+    useIonViewWillEnter(() => hideTabs());
+
+    useIonViewDidLeave(() => showTabs())
 
     return (
         <
