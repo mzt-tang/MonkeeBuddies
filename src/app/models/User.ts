@@ -178,7 +178,7 @@ export default class User {
 
                     // Add the activity to the friend
                     await database.firestore().collection('users').doc(friendUser?.userId).update({
-                        activity: firebase.firestore.FieldValue.arrayUnion(friendActivityStatement)
+                        activity: firebase.firestore.FieldValue.arrayRemove(friendActivityStatement)
                     });
                     await database.firestore().collection('users').doc(friendUser?.userId).update({
                         activity: firebase.firestore.FieldValue.arrayUnion(friendActivityStatement)
@@ -199,7 +199,7 @@ export default class User {
         if (userId !== undefined) {
             database.firestore()
                 .collection('users')
-                .doc(userId).onSnapshot(async snapshot => {
+                .doc(userId).get().then(async snapshot => {
                 const activities = await snapshot.data()?.activity;
 
                 const activityList = [];
