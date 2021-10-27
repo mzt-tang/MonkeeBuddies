@@ -22,6 +22,10 @@ export default function MyMonkeyController() {
         setMonkeyText(`${userModel?.monkeyName} is looking at you, waiting...`);
     }
 
+    function helpGibbons() {
+        setMonkeyText(`Help ${userModel?.monkeyName} support gibbons at the gibbon conservation society!`);
+    }
+
     function pet() {
         setMonkeyText(`${userModel?.monkeyName} is happy to get a pet!`);
     }
@@ -41,7 +45,7 @@ export default function MyMonkeyController() {
     return (
         <
             MyMonkeyPage
-            resetText={resetText}
+            helpGibbons={helpGibbons}
             pet={pet}
             feedBanana={feedBanana}
             playWith={playWith}

@@ -17,7 +17,7 @@ import {
  * @constructor
  */
 const MyMonkeyPage: React.FC<{
-    resetText: () => void;
+    helpGibbons: () => void;
     pet: () => void;
     feedBanana: () => void;
     playWith: () => void;
@@ -35,8 +35,8 @@ const MyMonkeyPage: React.FC<{
             <IonImg src={props.monkeyImage}/>
             <IonRow>
                 <IonCol className="ion-no-padding" size="12">
-                    <IonCard className="ion-no-margin ion-padding ion-text-center" color="light" onClick={props.resetText}>
-                        <h2>{props.monkeyText}</h2>
+                    <IonCard className="ion-no-margin ion-padding ion-text-center" color="light" onClick={props.helpGibbons}>
+                        <h3>{props.monkeyText}</h3>
                     </IonCard>
                 </IonCol>
             </IonRow>
