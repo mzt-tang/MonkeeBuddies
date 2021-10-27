@@ -21,7 +21,7 @@ const FriendsPage: React.FC<{
                 <IonButtons slot="start">
                     <IonBackButton color="dark" icon={arrowBackOutline}/>
                 </IonButtons>
-                <IonTitle>My QR Code</IonTitle>
+                <IonTitle>My Monkey Friends</IonTitle>
             </IonToolbar>
         </IonHeader>
         <IonContent>

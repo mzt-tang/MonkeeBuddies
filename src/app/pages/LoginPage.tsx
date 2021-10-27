@@ -39,10 +39,10 @@ const LoginPage: React.FC<{
                 </IonItem>
                 <IonRow className="ion-text-wrap ion-margin-vertical">
                     <IonCol size="6">
-                        <IonButton color="primary" onClick={props.handleLogin}>Login</IonButton>
+                        <IonButton expand="block" onClick={props.handleLogin}>Login</IonButton>
                     </IonCol>
                     <IonCol size="6">
-                        <IonButton color="secondary" routerLink="/signup">Go to signup</IonButton>
+                        <IonButton expand="block" fill="outline" routerLink="/signup">Go to signup</IonButton>
                     </IonCol>
                 </IonRow>
             </IonGrid>

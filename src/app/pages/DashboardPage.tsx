@@ -1,22 +1,37 @@
 import React from "react";
-import {IonButton, IonContent, IonHeader, IonPage, IonTitle, IonToolbar} from "@ionic/react";
+import {
+    IonBackButton,
+    IonButton,
+    IonButtons,
+    IonContent,
+    IonHeader,
+    IonIcon,
+    IonPage,
+    IonTitle,
+    IonToolbar
+} from "@ionic/react";
+import {settingsOutline} from "ionicons/icons";
 
 /**
  * The dashboard view.
  * @constructor
  */
 const DashboardPage: React.FC<{
-    handleSignout: () => void;
+
 }> = props => (
     <IonPage>
         <IonHeader>
             <IonToolbar>
+                <IonButtons slot="end">
+                    <IonButton color="dark">
+                        <IonIcon icon={settingsOutline} />
+                    </IonButton>
+                </IonButtons>
                 <IonTitle>Dashboard</IonTitle>
             </IonToolbar>
         </IonHeader>
         <IonContent className="ion-padding">
             <h2>Dashboard</h2>
-            <IonButton color="primary" onClick={props.handleSignout}>Sign out</IonButton>
         </IonContent>
     </IonPage>
 );

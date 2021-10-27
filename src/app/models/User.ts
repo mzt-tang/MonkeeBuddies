@@ -8,18 +8,19 @@ import {database} from "../database/firebaseConfig";
 export default class User {
 
     private static auth: firebase.auth.Auth = database.auth();
+    private static username: string;
+    private static monkeyName: string;
+
     readonly userId: string;
     readonly name: string;
     readonly monkeyName: string;
     readonly monkeyImage: string;
-    readonly activity: string[];
 
-    constructor(userId: string, name: string, monkeyName: string, monkeyImage: string, activity: string[]) {
+    constructor(userId: string, name: string, monkeyName: string, monkeyImage: string) {
         this.userId = userId;
         this.name = name;
         this.monkeyName = monkeyName;
         this.monkeyImage = monkeyImage;
-        this.activity = activity;
     }
 
     /**
@@ -29,7 +30,13 @@ export default class User {
      */
     static async loginUser(username: string, password: string) {
         try {
-            await this.auth.signInWithEmailAndPassword(username, password);
+            await this.auth.signInWithEmailAndPassword(username, password).then(async cred => {
+                const doc = await database.firestore()
+                    .collection('users')
+                    .doc(cred.user?.uid).get();
+                this.username = doc.data()?.name;
+                this.monkeyName = doc.data()?.monkeyName;
+            });
             return true;
         } catch (error) {
             // @ts-ignore
@@ -51,6 +58,8 @@ export default class User {
                 const doc = await database.firestore().collection('monkeys').doc('images').get();
                 const monkeyList = doc.data()?.list;
                 const randomMonkey: string = monkeyList[Math.floor(Math.random() * monkeyList.length)];
+                this.username = name;
+                this.username = monkeyName;
 
                 return database.firestore().collection('users').doc(cred.user?.uid).set({
                     name: name,
@@ -73,6 +82,8 @@ export default class User {
      */
     static async signoutUser() {
         try {
+            this.username = '';
+            this.monkeyName = '';
             await this.auth.signOut();
         } catch (error) {
             // @ts-ignore
@@ -80,15 +91,25 @@ export default class User {
         }
     }
 
+    /**
+     * Returns a user and their information given the user id.
+     * @param id .
+     * @param setUser The return function (a set hook)
+     */
     static getUserById(id: string, setUser: React.Dispatch<React.SetStateAction<User | undefined>>) {
         database.firestore()
             .collection('users')
             .doc(id).get().then(async snapshot => {
             const userInfo = await snapshot.data();
-            setUser(new User(id, userInfo?.name, userInfo?.monkeyName, userInfo?.monkeyImage, userInfo?.activity));
+            setUser(new User(id, userInfo?.name, userInfo?.monkeyName, userInfo?.monkeyImage));
         });
     }
 
+    /**
+     * Returns a friend list given a user id.
+     * @param userId .
+     * @param setFriendsList The return function (a set hook).
+     */
     static getUserFriends(userId: string, setFriendsList: React.Dispatch<React.SetStateAction<User[]>>) {
         database.firestore()
             .collection('users')
@@ -100,12 +121,17 @@ export default class User {
             for (let i = 0; i < friends.length; i++) {
                 const friend = await database.firestore().collection('users').doc(friends[i]).get();
                 const friendData = friend.data();
-                friendList.push(new User(friends[i], friendData?.name, friendData?.monkeyName, friendData?.monkeyImage, friendData?.activity));
+                friendList.push(new User(friends[i], friendData?.name, friendData?.monkeyName, friendData?.monkeyImage));
             }
             setFriendsList(friendList);
         });
     }
 
+    /**
+     * Adds a friend to the user's firestore friend list
+     * @param userId .
+     * @param friendId .
+     */
     static addFriend(userId: string, friendId: string) {
         return database.firestore()
             .collection('users')
@@ -133,4 +159,77 @@ export default class User {
         });
     }
 
+    /**
+     * Method for the user to action to a friend and update it within firestore.
+     * @param activity The action to that's going to be done to the friend.
+     * @param userId .
+     * @param friendId .
+     * @param friendName .
+     * @param friendMonkeyName .
+     */
+    static doActionToFriend(activity: string, userId: string, friendId: string | undefined, friendName: string | undefined, friendMonkeyName: string | undefined) {
+        const friendActivityStatement = this.username + "'s " + this.monkeyName + activity + friendMonkeyName + "!";
+        const userActivityStatement = this.monkeyName + activity + friendName + "'s " + friendMonkeyName + "!";
+
+        return database.firestore()
+            .collection('users')
+            .doc(friendId).get().then(async snapshot => {
+                if (snapshot.exists) {
+                    // Add the activity to the user
+                    await database.firestore().collection('users').doc(userId).update({
+                        activity: firebase.firestore.FieldValue.arrayRemove(userActivityStatement)
+                    });
+                    await database.firestore().collection('users').doc(userId).update({
+                        activity: firebase.firestore.FieldValue.arrayUnion(userActivityStatement)
+                    });
+
+                    // Add the activity to the friend
+                    await database.firestore().collection('users').doc(friendId).update({
+                        activity: firebase.firestore.FieldValue.arrayUnion(friendActivityStatement)
+                    });
+                    await database.firestore().collection('users').doc(friendId).update({
+                        activity: firebase.firestore.FieldValue.arrayUnion(friendActivityStatement)
+                    });
+
+                    toast(userActivityStatement, 3000);
+                } else {
+                    toast("Friend doesn't exist!");
+                }
+            });
+    }
+
+    /**
+     * Returns an activity list given a user id.
+     * @param userId .
+     */
+    static getUserActivity(userId: string | undefined, setActivityList: React.Dispatch<React.SetStateAction<string[]>>, user: boolean) {
+        if (user && userId !== undefined) {
+            database.firestore()
+                .collection('users')
+                .doc(userId).onSnapshot(async snapshot => {
+                const activities = await snapshot.data()?.activity;
+
+                const activityList = [];
+
+                for (let i = 0; i < activities.length; i++) {
+                    activityList.push(activities[i]);
+                }
+                setActivityList(activityList);
+            });
+        } else if (userId !== undefined) {
+            database.firestore()
+                .collection('users')
+                .doc(userId).get().then(async snapshot => {
+                const activities = await snapshot.data()?.activity;
+
+                const activityList = [];
+
+                for (let i = 0; i < activities.length; i++) {
+                    activityList.push(activities[i]);
+                }
+                setActivityList(activityList);
+            });
+        } else {
+        }
+    }
 }

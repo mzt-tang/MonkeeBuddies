@@ -1,30 +1,54 @@
-import React, {useEffect, useState} from "react";
-import {
-    IonBackButton,
-    IonButton,
-    IonButtons,
-    IonCard,
-    IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonCol, IonContent,
-    IonGrid,
-    IonHeader,
-    IonIcon, IonImg, IonItem, IonLabel, IonList, IonListHeader,
-    IonPage, IonRow, IonText,
-    IonToolbar, useIonViewDidLeave, useIonViewWillEnter
-} from "@ionic/react";
-import {arrowBackOutline} from "ionicons/icons";
+import React, {useContext, useEffect, useState} from "react";
+import {IonItem, IonLabel, useIonViewDidLeave, useIonViewWillEnter} from "@ionic/react";
 import {useParams} from "react-router-dom";
 
 import {User} from "../models";
 import {hideTabs, showTabs} from "../routes";
+import {AuthenticatedUserContext} from "../global";
+import {UserProfilePage} from "../pages";
 
 
 export default function UserProfileController() {
     const {id} = useParams<{ id: string }>();
-    const [user, setUser] = useState<User>();
+    const [fUser, setFUser] = useState<User>();
+    const [activityList, setActivityList] = useState<string[]>([]);
+    const {user} = useContext<any>(AuthenticatedUserContext);
 
     useEffect(() => {
-        User.getUserById(id, setUser);
+        User.getUserById(id, setFUser);
     }, [id]);
+
+    useEffect(() => {
+        User.getUserActivity(fUser?.userId, setActivityList, false);
+    }, [fUser]);
+
+    const activityComponents = () => {
+        return activityList.map((activity) => {
+            return (
+                <IonItem>
+                    <IonLabel>
+                        <p>{activity}</p>
+                    </IonLabel>
+                </IonItem>
+            );
+        });
+    }
+
+    async function playWith() {
+        await User.doActionToFriend(" played with ", user.uid, fUser?.userId, fUser?.name, fUser?.monkeyName);
+    }
+
+    async function groom() {
+        await User.doActionToFriend(" groomed ", user.uid, fUser?.userId, fUser?.name, fUser?.monkeyName).then();
+    }
+
+    async function giveBanana() {
+        await User.doActionToFriend(" gave a banana to ", user.uid, fUser?.userId, fUser?.name, fUser?.monkeyName).then();
+    }
+
+    async function flingPoo() {
+        await User.doActionToFriend(" flung poo at ", user.uid, fUser?.userId, fUser?.name, fUser?.monkeyName).then();
+    }
 
     //Show and hide the navigation tabs when in id
     useIonViewWillEnter(() => hideTabs());
@@ -32,34 +56,6 @@ export default function UserProfileController() {
     useIonViewDidLeave(() => showTabs());
 
     return (
-        <IonPage>
-            <IonHeader>
-                <IonToolbar>
-                    <IonButtons slot="start">
-
-                        <IonBackButton color="dark" icon={arrowBackOutline}/>
-                    </IonButtons>
-                </IonToolbar>
-            </IonHeader>
-            <IonContent>
-
-                {/*monkey image*/}
-                <IonImg src={user?.monkeyImage}/>
-
-                <IonCard className="ion-padding ion-margin">
-                    <IonCardHeader>
-                        <IonCardSubtitle>{user?.monkeyName}</IonCardSubtitle>
-                        <IonCardTitle>{user?.name}</IonCardTitle>
-                    </IonCardHeader>
-                    <IonCardContent className="ion-justify-content-center">
-                        <IonItem className="ion-justify-content-center">
-                            <IonList>
-                                <IonListHeader>Activity</IonListHeader>
-                            </IonList>
-                        </IonItem>
-                    </IonCardContent>
-                </IonCard>
-            </IonContent>
-        </IonPage>
+        <UserProfilePage activityComponents={activityComponents()} playWith={playWith} groom={groom} giveBanana={giveBanana} flingPoo={flingPoo} fUser={fUser} />
     );
 }

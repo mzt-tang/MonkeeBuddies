@@ -9,11 +9,7 @@ import {User} from "../models";
  */
 export default function DashboardController() {
 
-    async function handleSignout() {
-        await User.signoutUser();
-    }
-
     return (
-        <DashboardPage handleSignout={handleSignout}/>
+        <DashboardPage/>
     )
 }

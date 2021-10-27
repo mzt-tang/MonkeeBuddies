@@ -47,10 +47,10 @@ const SignupPage: React.FC<{
                 </IonItem>
                 <IonRow className="ion-text-wrap ion-margin-vertical">
                     <IonCol size="6">
-                        <IonButton color="primary" onClick={props.handleSignup}>Register</IonButton>
+                        <IonButton expand="block" onClick={props.handleSignup}>Register</IonButton>
                     </IonCol>
                     <IonCol size="6">
-                        <IonButton color="secondary" routerLink="/login">Go to login</IonButton>
+                        <IonButton expand="block" fill="outline" routerLink="/login">Go to login</IonButton>
                     </IonCol>
                 </IonRow>
             </IonGrid>
