@@ -30,8 +30,11 @@ const DashboardPage: React.FC<{
         </IonHeader>
         <IonContent className="ion-padding">
             <IonGrid>
-                <IonRow>
-                    <h3 className="ion-padding-horizontal ion-margin-bottom">Recent Activities</h3>
+                <IonRow className="ion-text-center ion-margin-bottom">
+                    <IonTitle>Welcome to Monkey Buddies!</IonTitle>
+                </IonRow>
+                <IonRow className="ion-justify-content-center">
+                    <h5 className="ion-padding-horizontal ion-margin-top">Recent Activities</h5>
                 </IonRow>
                 <IonRow className="ion-padding-horizontal ion-justify-content-center">
                     <IonList>
