@@ -21,7 +21,7 @@ const UserProfilePage: React.FC<{
     groom: () => void;
     giveBanana: () => void;
     flingPoo: () => void;
-    fUser: User | undefined,
+    fUser: User | null,
 }> = props => (
     <IonPage>
         <IonHeader>

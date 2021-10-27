@@ -7,7 +7,6 @@ import {LoginController, SignupController} from "../controllers";
 import {AuthenticatedUserContext} from "../global";
 import {database} from "../database/firebaseConfig";
 import {HomeNavigator} from "./index";
-import { match } from "react-router-dom";
 
 const auth = database.auth();
 

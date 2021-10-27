@@ -1,3 +1,4 @@
+import React from "react";
 import {toast} from "../components";
 import firebase from "firebase/compat";
 import {database} from "../database/firebaseConfig";
@@ -8,8 +9,6 @@ import {database} from "../database/firebaseConfig";
 export default class User {
 
     private static auth: firebase.auth.Auth = database.auth();
-    private static username: string;
-    private static monkeyName: string;
 
     readonly userId: string;
     readonly name: string;
@@ -31,11 +30,9 @@ export default class User {
     static async loginUser(username: string, password: string) {
         try {
             await this.auth.signInWithEmailAndPassword(username, password).then(async cred => {
-                const doc = await database.firestore()
+                await database.firestore()
                     .collection('users')
                     .doc(cred.user?.uid).get();
-                this.username = doc.data()?.name;
-                this.monkeyName = doc.data()?.monkeyName;
             });
             return true;
         } catch (error) {
@@ -58,8 +55,6 @@ export default class User {
                 const doc = await database.firestore().collection('monkeys').doc('images').get();
                 const monkeyList = doc.data()?.list;
                 const randomMonkey: string = monkeyList[Math.floor(Math.random() * monkeyList.length)];
-                this.username = name;
-                this.username = monkeyName;
 
                 return database.firestore().collection('users').doc(cred.user?.uid).set({
                     name: name,
@@ -82,8 +77,6 @@ export default class User {
      */
     static async signoutUser() {
         try {
-            this.username = '';
-            this.monkeyName = '';
             await this.auth.signOut();
         } catch (error) {
             // @ts-ignore
@@ -96,10 +89,10 @@ export default class User {
      * @param id .
      * @param setUser The return function (a set hook)
      */
-    static getUserById(id: string, setUser: React.Dispatch<React.SetStateAction<User | undefined>>) {
+    static getUserById(id: string, setUser: React.Dispatch<React.SetStateAction<User | null>>) {
         database.firestore()
             .collection('users')
-            .doc(id).get().then(async snapshot => {
+            .doc(id).onSnapshot(async snapshot => {
             const userInfo = await snapshot.data();
             setUser(new User(id, userInfo?.name, userInfo?.monkeyName, userInfo?.monkeyImage));
         });
@@ -118,7 +111,7 @@ export default class User {
 
             const friendList = [];
 
-            for (let i = 0; i < friends.length; i++) {
+            for (let i = friends.length-1; i >= 0; i--) {
                 const friend = await database.firestore().collection('users').doc(friends[i]).get();
                 const friendData = friend.data();
                 friendList.push(new User(friends[i], friendData?.name, friendData?.monkeyName, friendData?.monkeyImage));
@@ -167,27 +160,27 @@ export default class User {
      * @param friendName .
      * @param friendMonkeyName .
      */
-    static doActionToFriend(activity: string, userId: string, friendId: string | undefined, friendName: string | undefined, friendMonkeyName: string | undefined) {
-        const friendActivityStatement = this.username + "'s " + this.monkeyName + activity + friendMonkeyName + "!";
-        const userActivityStatement = this.monkeyName + activity + friendName + "'s " + friendMonkeyName + "!";
+    static doActionToFriend(activity: string, user: User | null, friendUser: User | null) {
+        const friendActivityStatement = user?.name + "'s " + user?.monkeyName + activity + friendUser?.monkeyName + "!";
+        const userActivityStatement = user?.monkeyName + activity + friendUser?.name + "'s " + friendUser?.monkeyName + "!";
 
         return database.firestore()
             .collection('users')
-            .doc(friendId).get().then(async snapshot => {
+            .doc(friendUser?.userId).get().then(async snapshot => {
                 if (snapshot.exists) {
                     // Add the activity to the user
-                    await database.firestore().collection('users').doc(userId).update({
+                    await database.firestore().collection('users').doc(user?.userId).update({
                         activity: firebase.firestore.FieldValue.arrayRemove(userActivityStatement)
                     });
-                    await database.firestore().collection('users').doc(userId).update({
+                    await database.firestore().collection('users').doc(user?.userId).update({
                         activity: firebase.firestore.FieldValue.arrayUnion(userActivityStatement)
                     });
 
                     // Add the activity to the friend
-                    await database.firestore().collection('users').doc(friendId).update({
+                    await database.firestore().collection('users').doc(friendUser?.userId).update({
                         activity: firebase.firestore.FieldValue.arrayUnion(friendActivityStatement)
                     });
-                    await database.firestore().collection('users').doc(friendId).update({
+                    await database.firestore().collection('users').doc(friendUser?.userId).update({
                         activity: firebase.firestore.FieldValue.arrayUnion(friendActivityStatement)
                     });
 
@@ -202,8 +195,8 @@ export default class User {
      * Returns an activity list given a user id.
      * @param userId .
      */
-    static getUserActivity(userId: string | undefined, setActivityList: React.Dispatch<React.SetStateAction<string[]>>, user: boolean) {
-        if (user && userId !== undefined) {
+    static getUserActivity(userId: string | undefined, setActivityList: React.Dispatch<React.SetStateAction<string[]>>) {
+        if (userId !== undefined) {
             database.firestore()
                 .collection('users')
                 .doc(userId).onSnapshot(async snapshot => {
@@ -211,25 +204,11 @@ export default class User {
 
                 const activityList = [];
 
-                for (let i = 0; i < activities.length; i++) {
+                for (let i = activities.length-1; i >= 0; i--) {
                     activityList.push(activities[i]);
                 }
                 setActivityList(activityList);
             });
-        } else if (userId !== undefined) {
-            database.firestore()
-                .collection('users')
-                .doc(userId).get().then(async snapshot => {
-                const activities = await snapshot.data()?.activity;
-
-                const activityList = [];
-
-                for (let i = 0; i < activities.length; i++) {
-                    activityList.push(activities[i]);
-                }
-                setActivityList(activityList);
-            });
-        } else {
         }
     }
 }

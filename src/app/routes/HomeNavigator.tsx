@@ -3,7 +3,13 @@ import {IonIcon, IonRouterOutlet, IonTabBar, IonTabButton, IonTabs} from "@ionic
 import {Redirect, Route} from "react-router-dom";
 import {homeOutline, pawOutline, peopleOutline} from "ionicons/icons";
 
-import {AddFriendController, DashboardController, FriendsController, UserProfileController} from "../controllers";
+import {
+    AddFriendController,
+    DashboardController,
+    FriendsController, MyMonkeyController,
+    SettingsController,
+    UserProfileController
+} from "../controllers";
 import {AuthenticatedUserContext} from "../global";
 
 import './floating-tab-bar.css';
@@ -24,11 +30,11 @@ const HomeNavigator: React.FC = () => {
         <IonTabs>
             <IonRouterOutlet>
                 <Route exact path="/app/dashboard" component={DashboardController}/>
-                <Route exact path="/app/my-monkey" component={AddFriendController}/>
+                <Route exact path="/app/my-monkey" component={MyMonkeyController}/>
                 <Route exact path="/app/friends" component={FriendsController}/>
                 <Route exact path="/app/friends/add" component={AddFriendController}/>
                 <Route path="/app/users/:id" component={UserProfileController}/>
-                <Route exact path="/app/settings"/>
+                <Route exact path="/app/settings" component={SettingsController}/>
             </IonRouterOutlet>
             <IonTabBar slot="bottom">
                 <IonTabButton tab="dashboard" href="/app/dashboard">

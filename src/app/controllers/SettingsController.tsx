@@ -1,5 +1,5 @@
-import {IonPage} from "@ionic/react";
 import {User} from "../models";
+import {SettingsPage} from "../pages";
 
 
 export default function SettingsController() {
@@ -9,8 +9,6 @@ export default function SettingsController() {
     }
 
     return (
-        <IonPage>
-
-        </IonPage>
+        <SettingsPage handleSignout={handleSignout}/>
     )
 }

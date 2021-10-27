@@ -10,22 +10,31 @@ import {UserProfilePage} from "../pages";
 
 export default function UserProfileController() {
     const {id} = useParams<{ id: string }>();
-    const [fUser, setFUser] = useState<User>();
+    const [fUser, setFUser] = useState<User | null>(null);
+    const [thisUser, setThisUser] = useState<User | null>(null);
     const [activityList, setActivityList] = useState<string[]>([]);
     const {user} = useContext<any>(AuthenticatedUserContext);
 
     useEffect(() => {
         User.getUserById(id, setFUser);
-    }, [id]);
+        User.getUserById(user.uid, setThisUser);
+    }, []);
 
     useEffect(() => {
-        User.getUserActivity(fUser?.userId, setActivityList, false);
-    }, [fUser]);
+        User.getUserActivity(fUser?.userId, setActivityList);
+    }, [fUser?.userId]);
+
+    useEffect(() => {
+        return () => {
+            setThisUser(null);
+            setFUser(null);
+        }
+    }, []);
 
     const activityComponents = () => {
         return activityList.map((activity) => {
             return (
-                <IonItem>
+                <IonItem key={activity}>
                     <IonLabel>
                         <p>{activity}</p>
                     </IonLabel>
@@ -35,19 +44,19 @@ export default function UserProfileController() {
     }
 
     async function playWith() {
-        await User.doActionToFriend(" played with ", user.uid, fUser?.userId, fUser?.name, fUser?.monkeyName);
+        await User.doActionToFriend(" played with ", thisUser, fUser);
     }
 
     async function groom() {
-        await User.doActionToFriend(" groomed ", user.uid, fUser?.userId, fUser?.name, fUser?.monkeyName).then();
+        await User.doActionToFriend(" groomed ", thisUser, fUser);
     }
 
     async function giveBanana() {
-        await User.doActionToFriend(" gave a banana to ", user.uid, fUser?.userId, fUser?.name, fUser?.monkeyName).then();
+        await User.doActionToFriend(" gave a banana to ", thisUser, fUser);
     }
 
     async function flingPoo() {
-        await User.doActionToFriend(" flung poo at ", user.uid, fUser?.userId, fUser?.name, fUser?.monkeyName).then();
+        await User.doActionToFriend(" flung poo at ", thisUser, fUser);
     }
 
     //Show and hide the navigation tabs when in id

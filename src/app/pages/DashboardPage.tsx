@@ -1,12 +1,10 @@
 import React from "react";
 import {
-    IonBackButton,
     IonButton,
-    IonButtons,
-    IonContent,
+    IonButtons, IonContent, IonGrid,
     IonHeader,
-    IonIcon,
-    IonPage,
+    IonIcon, IonList,
+    IonPage, IonRow,
     IonTitle,
     IonToolbar
 } from "@ionic/react";
@@ -17,13 +15,13 @@ import {settingsOutline} from "ionicons/icons";
  * @constructor
  */
 const DashboardPage: React.FC<{
-
+    activityComponents: JSX.Element[]
 }> = props => (
     <IonPage>
         <IonHeader>
             <IonToolbar>
                 <IonButtons slot="end">
-                    <IonButton color="dark">
+                    <IonButton color="dark" routerLink="/app/settings">
                         <IonIcon icon={settingsOutline} />
                     </IonButton>
                 </IonButtons>
@@ -31,7 +29,16 @@ const DashboardPage: React.FC<{
             </IonToolbar>
         </IonHeader>
         <IonContent className="ion-padding">
-            <h2>Dashboard</h2>
+            <IonGrid>
+                <IonRow>
+                    <h3 className="ion-padding-horizontal ion-margin-bottom">Recent Activities</h3>
+                </IonRow>
+                <IonRow className="ion-padding-horizontal ion-justify-content-center">
+                    <IonList>
+                        {props.activityComponents}
+                    </IonList>
+                </IonRow>
+            </IonGrid>
         </IonContent>
     </IonPage>
 );
