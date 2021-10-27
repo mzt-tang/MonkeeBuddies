@@ -211,4 +211,44 @@ export default class User {
             });
         }
     }
+
+    /**
+     * A method to change the specificed user's name
+     * @param userId The user to be changed
+     * @param name The new name
+     */
+    static changeName(userId: string, name: string) {
+        return database.firestore()
+            .collection('users')
+            .doc(userId).get().then(async snapshot => {
+                if (snapshot.exists) {
+                    await database.firestore().collection('users').doc(userId).update({
+                        name: name
+                    });
+                    toast("Name successfully changed!");
+                } else {
+                    toast("User doesn't exist! Oh No!");
+                }
+            });
+    }
+
+    /**
+     * A method to change the specificed user's monkey's name
+     * @param userId The user to be changed
+     * @param monkeyName The new name
+     */
+    static changeMonkeyName(userId: string, monkeyName: string) {
+        return database.firestore()
+            .collection('users')
+            .doc(userId).get().then(async snapshot => {
+                if (snapshot.exists) {
+                    await database.firestore().collection('users').doc(userId).update({
+                        monkeyName: monkeyName
+                    });
+                    toast("Monkey name successfully changed!");
+                } else {
+                    toast("User doesn't exist! Oh No!");
+                }
+            });
+    }
 }
