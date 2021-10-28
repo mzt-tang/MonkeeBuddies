@@ -1,7 +1,7 @@
 import React, {useContext, useRef} from "react";
 import {
     getPlatforms,
-    useIonModal,
+    useIonModal, useIonViewDidLeave, useIonViewWillEnter,
 } from "@ionic/react";
 import { BarcodeScanner } from '@ionic-native/barcode-scanner';
 
@@ -9,6 +9,7 @@ import {AddFriendPage} from "../pages";
 import {QrWebScanModal, toast} from "../components";
 import {AuthenticatedUserContext} from "../global";
 import {User} from "../models";
+import {hideTabs, showTabs} from "../routes";
 
 
 export default function AddFriendController() {
@@ -55,6 +56,12 @@ export default function AddFriendController() {
         handleScan: handleScan,
         handleError: handleError
     });
+
+
+    //Show and hide the navigation tabs when in id
+    useIonViewWillEnter(() => hideTabs());
+
+    useIonViewDidLeave(() => showTabs())
 
     return (
         <AddFriendPage scanQr={scanQR} userId={user.uid}/>

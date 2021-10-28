@@ -199,7 +199,7 @@ export default class User {
         if (userId !== undefined) {
             database.firestore()
                 .collection('users')
-                .doc(userId).get().then(async snapshot => {
+                .doc(userId).onSnapshot(async snapshot => {
                 const activities = await snapshot.data()?.activity;
 
                 const activityList = [];
