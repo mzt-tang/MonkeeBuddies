@@ -15,8 +15,10 @@ export default function MyMonkeyController() {
     }, [user.uid]);
 
     useEffect(() => {
-        resetText();
-    }, [userModel])
+        if (userModel === undefined) {
+            resetText();
+        }
+    }, [userModel]);
 
     function resetText() {
         setMonkeyText(`${userModel?.monkeyName} is looking at you, waiting...`);
