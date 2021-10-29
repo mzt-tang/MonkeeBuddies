@@ -191,6 +191,34 @@ export default class User {
             });
     }
 
+
+    /**
+     * Method for the user to interact with their pet.
+     * @param activity The to be done.
+     * @param user The user.
+     */
+    static doAction(activity: string, user: User | null) {
+        const userActivityStatement = user?.name + activity + user?.monkeyName + "!";
+
+        database.firestore()
+            .collection('users')
+            .doc(user?.userId).get().then(async snapshot => {
+                if (snapshot.exists) {
+                    // Add the activity to the user
+                    await database.firestore().collection('users').doc(user?.userId).update({
+                        activity: firebase.firestore.FieldValue.arrayRemove(userActivityStatement)
+                    });
+                    await database.firestore().collection('users').doc(user?.userId).update({
+                        activity: firebase.firestore.FieldValue.arrayUnion(userActivityStatement)
+                    });
+
+                    toast(userActivityStatement, 3000);
+                } else {
+                    toast("User doesn't exist!");
+                }
+            });
+    }
+
     /**
      * Returns an activity list given a user id.
      * @param userId .
