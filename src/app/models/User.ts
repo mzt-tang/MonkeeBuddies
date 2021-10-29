@@ -202,6 +202,10 @@ export default class User {
                 .doc(userId).onSnapshot(async snapshot => {
                 const activities = await snapshot.data()?.activity;
 
+                if (activities === undefined) {
+                    return
+                }
+
                 const activityList = [];
 
                 for (let i = activities.length-1; i >= 0; i--) {

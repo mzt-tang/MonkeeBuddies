@@ -4,6 +4,7 @@ import {DashboardPage} from "../pages";
 import {User} from "../models";
 import {IonCard, IonCardHeader, IonCardTitle} from "@ionic/react";
 import {AuthenticatedUserContext} from "../global";
+import {toast} from "../components";
 
 /**
  * The dashboard controller/presenter.
@@ -17,7 +18,13 @@ export default function DashboardController() {
         User.getUserActivity(user.uid, setActivityList);
     }, [user.uid]);
 
+    useEffect(() => {
+        toast(activityList[0]);
+    }, [activityList]);
+
     const activityComponents = () => {
+
+
         return activityList.map((activity) => {
             return (
                 <IonCard key={activity}>
