@@ -8,3 +8,5 @@ The IoT part of the app is allowing you add friends via a QR code and scanning i
 The backend of the users stored as well as the monkey images + stats are stored using Firebase.
 
 Below is a video demonstration of the app.
+https://github.com/mzt-tang/MonkeeBuddies/assets/89080646/8616e82d-3bb9-4811-995b-b94c2e0d523e
+
