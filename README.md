@@ -9,7 +9,5 @@ The backend of the users stored as well as the monkey images + stats are stored 
 
 Below is a video demonstration of the app.
 
-<video src='https://github.com/mzt-tang/MonkeeBuddies/assets/89080646/8616e82d-3bb9-4811-995b-b94c2e0d523e' width=180/>
-
 https://github.com/mzt-tang/MonkeeBuddies/assets/89080646/8616e82d-3bb9-4811-995b-b94c2e0d523e
 
